@@ -2,9 +2,11 @@
 
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:lottie/lottie.dart';
 import 'package:flutter/material.dart';
 import 'package:plant_app/constant/colors.dart';
 import 'package:plant_app/constant/controller.dart';
+import 'package:plant_app/constant/imagepath.dart';
 import 'package:plant_app/widgets/back_button.dart';
 import 'package:plant_app/widgets/custom_button.dart';
 import 'package:plant_app/widgets/custom_snackbar.dart';
@@ -86,7 +88,12 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: EdgeInsets.all(20),
+                  margin: const EdgeInsets.only(bottom: 15),
+                  width: 300,
+                  child: Lottie.asset(ImagePath.forgetPass),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(right: 20, left: 20),
                   child: Text(
                     'Recieve an email to reset your password',
                     style: TextStyle(

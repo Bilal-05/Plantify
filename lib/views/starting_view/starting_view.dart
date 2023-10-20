@@ -2,7 +2,6 @@
 
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:plant_app/constant/colors.dart';
 import 'package:plant_app/views/login-signup-views/login_view/login_view.dart';
 import 'package:plant_app/views/login-signup-views/signup_view/signup_view.dart';

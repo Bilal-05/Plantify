@@ -10,4 +10,5 @@ class ImagePath {
   static String popular = 'assets/svg/popular.svg';
   static String setting = 'assets/svg/setting.svg';
   static String invite = 'assets/svg/invite.svg';
+  static String forgetPass = 'animations/forgetPass.json';
 }

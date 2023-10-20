@@ -70,27 +70,15 @@ class _LoginViewState extends State<LoginView> {
           isDatahere = true;
         },
       );
-      CustomSnack.customSnackBar(
-        context,
-        'Error',
-        e.message!,
-        AnimatedSnackBarType.error,
-      );
-      // if (e.code == 'user-not-found') {
-      //   CustomSnack.customSnackBar(
-      //     context,
-      //     'Error',
-      //     'User not found',
-      //     AnimatedSnackBarType.error,
-      //   );
-      // } else if (e.code == 'wrong-password') {
-      //   CustomSnack.customSnackBar(
-      //     context,
-      //     'Error',
-      //     'Wrong password provided for that user',
-      //     AnimatedSnackBarType.error,
-      //   );
-      // }
+      print(e.code);
+      if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
+        CustomSnack.customSnackBar(
+          context,
+          'Error',
+          'Email or Password is incorrect',
+          AnimatedSnackBarType.error,
+        );
+      }
     } catch (e) {
       print(e);
       setState(() {
@@ -191,24 +179,24 @@ class _LoginViewState extends State<LoginView> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  SizedBox(
-                                    width: 130,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            if (rememberMe) {
-                                              setState(() {
-                                                rememberMe = false;
-                                              });
-                                            } else {
-                                              rememberMe = true;
-                                              setState(() {});
-                                            }
-                                          },
-                                          child: CircleAvatar(
+                                  InkWell(
+                                    onTap: () {
+                                      if (rememberMe) {
+                                        setState(() {
+                                          rememberMe = false;
+                                        });
+                                      } else {
+                                        rememberMe = true;
+                                        setState(() {});
+                                      }
+                                    },
+                                    child: SizedBox(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          CircleAvatar(
                                             radius: 13,
                                             backgroundColor: Colors.transparent,
                                             child: rememberMe
@@ -221,16 +209,16 @@ class _LoginViewState extends State<LoginView> {
                                                     color: AppColor.pct,
                                                   ),
                                           ),
-                                        ),
-                                        Text(
-                                          'Remember Me',
-                                          style: TextStyle(
-                                            color: AppColor.sct,
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 14,
+                                          Text(
+                                            'Remember Me',
+                                            style: TextStyle(
+                                              color: AppColor.sct,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 14,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   CustomTextButton(
@@ -253,15 +241,14 @@ class _LoginViewState extends State<LoginView> {
                             ),
                             Media.space(0.15, context),
                             CustomButton(
-                              isDatahere: isDatahere,
-                              height: 45,
-                              width: 350,
-                              buttonText: 'Login',
-                              buttonColor: AppColor.pc,
-                              buttonFunction: () {
-                                login();
-                              },
-                            ),
+                                isDatahere: isDatahere,
+                                height: 45,
+                                width: 350,
+                                buttonText: 'Login',
+                                buttonColor: AppColor.pc,
+                                buttonFunction: () {
+                                  login();
+                                }),
                             Media.space(0.01, context),
                             Container(
                               margin: const EdgeInsets.only(bottom: 30),

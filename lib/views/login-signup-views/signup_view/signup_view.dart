@@ -8,6 +8,7 @@ import 'package:plant_app/constant/colors.dart';
 import 'package:plant_app/constant/controller.dart';
 import 'package:plant_app/constant/imagepath.dart';
 import 'package:plant_app/views/login-signup-views/login_view/login_view.dart';
+import 'package:plant_app/views/main_menu/drawer/zoom_drawer/zoom_drawer.dart';
 import 'package:plant_app/widgets/back_button.dart';
 
 import 'package:plant_app/widgets/custom_media_query.dart';
@@ -15,6 +16,7 @@ import 'package:plant_app/widgets/custom_button.dart';
 import 'package:plant_app/widgets/custom_snackbar.dart';
 import 'package:plant_app/widgets/custom_textfield.dart';
 import 'package:plant_app/widgets/text_button.dart';
+import 'package:string_validator/string_validator.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -60,11 +62,13 @@ class _SignUpViewState extends State<SignUpView> {
       AppInit.signUpEmailController.clear();
       AppInit.signUpPassController.clear();
       AppInit.signUpFullnameController.clear();
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) {
-            return const LoginView();
+            return Zoom(
+              documentId: credential.user!.uid,
+            );
           },
         ),
       );
@@ -74,27 +78,15 @@ class _SignUpViewState extends State<SignUpView> {
           isDatahere = true;
         },
       );
-      CustomSnack.customSnackBar(
-        context,
-        'Error',
-        e.message!,
-        AnimatedSnackBarType.error,
-      );
-      // if (e.code == 'email-already-in-use') {
-      //   CustomSnack.customSnackBar(
-      //     context,
-      //     'Error',
-      //     'The account already exists for that email.',
-      //     AnimatedSnackBarType.error,
-      //   );
-      // } else if (e.code == 'weak-password') {
-      //   CustomSnack.customSnackBar(
-      //     context,
-      //     'Error',
-      //     'The password provided is too weak.',
-      //     AnimatedSnackBarType.error,
-      //   );
-      // }
+      if (e.code == 'email-already-in-use') {
+        CustomSnack.customSnackBar(
+          context,
+          'Error',
+          'Email already in use.',
+          AnimatedSnackBarType.error,
+        );
+      }
+      print(e.code);
     } catch (e) {
       setState(() {
         isDatahere = true;
@@ -184,7 +176,30 @@ class _SignUpViewState extends State<SignUpView> {
                         buttonText: 'Register',
                         buttonColor: AppColor.pc,
                         buttonFunction: () {
-                          register();
+                          bool isPassLength = isLength(
+                              AppInit.signUpPassController.text, 8, 20);
+                          bool isCorrect =
+                              isAlphanumeric(AppInit.signUpPassController.text);
+                          isCorrect = AppInit.signUpPassController.text
+                              .contains(RegExp(
+                                  r'^(?=.*?[A-Z])(?=.*?[!@#\$&*~]).{8,}$'));
+                          if (!isPassLength) {
+                            CustomSnack.customSnackBar(
+                              context,
+                              'Error',
+                              'Password must contain atleast 8 characters',
+                              AnimatedSnackBarType.error,
+                            );
+                          } else if (!isCorrect) {
+                            CustomSnack.customSnackBar(
+                              context,
+                              'Error',
+                              'Password must contain \nNumbers and Alphabets \nAlteast 1 Special character \nAlteast 1 Capital alphabet',
+                              AnimatedSnackBarType.error,
+                            );
+                          } else {
+                            register();
+                          }
                         },
                       ),
                     ),
